@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
-import ToDoList from './components/ToDoList';
+import ToDoList from './components/ToDoListContainer';
 
 const App = () => (
   <Provider store={store}>
