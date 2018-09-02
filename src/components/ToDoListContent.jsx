@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-const containerStyle = {
-
+const textFieldStyle = {
+  marginTop: '0',
+  marginBottom: '30px',
+  marginRight: '10px',
+  width: '80%',
 };
 
 export default class ToDoListContent extends Component {
   state = {
     selectedList: 'TODO',
+    addTodoValue: '',
   }
 
   getButtons = () => (
@@ -38,6 +43,12 @@ export default class ToDoListContent extends Component {
 
   changeSelectedList = value => this.setState(prevState => ({ ...prevState, selectedList: value }));
 
+  changeNewToDo = value => this.setState(prevState => ({ ...prevState, addTodoValue: value }));
+
+  addNewToDo = () => {
+    console.log(this.state.addTodoValue);
+  }
+
   getToDoList = () => {
     const { selectedList } = this.state;
     if (selectedList === 'TODO') {
@@ -60,8 +71,20 @@ export default class ToDoListContent extends Component {
         direction="row"
         justify="center"
         alignItems="center"
-        style={containerStyle}
       >
+        <Grid item xs={10}>
+          <TextField
+            id="Add To Do"
+            label="Add To Do"
+            placeholder="Add To Do"
+            onChange={event => this.changeNewToDo(event.target.value)}
+            margin="normal"
+            style={textFieldStyle}
+          />
+          <Button variant="outlined" onClick={this.addNewToDo}>
+            ADD
+          </Button>
+        </Grid>
         <Grid item xs={10}>
           {this.getButtons()}
         </Grid>
