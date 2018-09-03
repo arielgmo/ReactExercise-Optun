@@ -29,7 +29,7 @@ const buttonStyle = {
 };
 
 const getToDoList = (toDoList, toggleSelect) => {
-  if (toDoList !== null && Object.keys(toDoList).length > 0) {
+  if (toDoList !== null) {
     return toDoList.map(toDo => (
       <Card
         key={toDo.toDoName}
@@ -48,7 +48,7 @@ const getToDoList = (toDoList, toggleSelect) => {
 };
 
 const getFilteredList = (filterMode, toDoList) => {
-  if (toDoList !== null && Object.keys(toDoList).length > 0) {
+  if (toDoList !== null) {
     if (filterMode === 'TODO') {
       return toDoList.filter((toDo) => {
         if (toDo.done === false) {

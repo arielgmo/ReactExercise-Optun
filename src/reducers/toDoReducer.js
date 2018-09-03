@@ -6,7 +6,7 @@ import {
   REMOVE_SELECTED_TO_DOS,
 } from '../actions/toDoActions';
 
-export default function products(state = {}, action) {
+export default function products(state = [], action) {
   switch (action.type) {
     case ADD_NEW_TODO: {
       return [
