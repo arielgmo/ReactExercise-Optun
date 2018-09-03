@@ -1,27 +1,12 @@
 import {
   ADD_NEW_TODO,
   TOGGLE_TODO,
+  DO_SELECTED_TO_DOS,
+  UNDO_SELECTED_TO_DOS,
+  REMOVE_SELECTED_TO_DOS,
 } from '../actions/toDoActions';
 
-const mockedState = [
-  {
-    toDoName: 'Go to the supermarket',
-    done: false,
-    selected: false,
-  },
-  {
-    toDoName: 'Clean the house',
-    done: true,
-    selected: false,
-  },
-  {
-    toDoName: 'Make the report',
-    done: false,
-    selected: false,
-  },
-];
-
-export default function products(state = mockedState, action) {
+export default function products(state = {}, action) {
   switch (action.type) {
     case ADD_NEW_TODO: {
       return [
@@ -35,6 +20,30 @@ export default function products(state = mockedState, action) {
           return { ...toDo, selected: !toDo.selected };
         }
         return toDo;
+      });
+    }
+    case DO_SELECTED_TO_DOS: {
+      return state.map((toDo) => {
+        if (action.payload.includes(toDo.toDoName)) {
+          return { ...toDo, done: true, selected: false };
+        }
+        return { ...toDo, selected: false };
+      });
+    }
+    case UNDO_SELECTED_TO_DOS: {
+      return state.map((toDo) => {
+        if (action.payload.includes(toDo.toDoName)) {
+          return { ...toDo, done: false, selected: false };
+        }
+        return { ...toDo, selected: false };
+      });
+    }
+    case REMOVE_SELECTED_TO_DOS: {
+      return state.filter((toDo) => {
+        if (action.payload.includes(toDo.toDoName)) {
+          return false;
+        }
+        return true;
       });
     }
     default:

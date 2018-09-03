@@ -14,7 +14,7 @@ const ToDoListContainer = () => (
     alignItems="center"
     style={containerStyle}
   >
-    <Grid item xs={6}>
+    <Grid item xs={8}>
       <ToDoListCard />
     </Grid>
   </Grid>

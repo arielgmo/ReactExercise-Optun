@@ -4,7 +4,13 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent/CardContent';
-import { toggleSelectToDo } from '../actions/toDoActions';
+import Button from '@material-ui/core/Button';
+import {
+  toggleSelectToDo,
+  doSelectedToDos,
+  undoSelectedToDos,
+  removeSelectedToDos,
+} from '../actions/toDoActions';
 
 const cardContentStyle = {
   display: 'flex',
@@ -17,47 +23,68 @@ const gridStyle = {
   marginTop: '20px',
 };
 
-const getToDoList = (toDoList, toggleSelect) => {
-  return toDoList.map(toDo => (
-    <Card
-      key={toDo.toDoName}
-      style={toDo.selected ? { border: '1px solid red', marginTop: '10px' } : { marginTop: '10px' }}
-      onClick={() => toggleSelect(toDo.toDoName)}
-    >
-      <CardContent
-        style={cardContentStyle}
-      >
-        {toDo.toDoName}
-      </CardContent>
-    </Card>
-  ));
+const buttonStyle = {
+  width: '90%',
+  fontSize: '14px',
 };
 
-const getFilteredList = (selectedList, toDoList) => {
-  if (selectedList === 'TODO') {
-    return toDoList.filter((toDo) => {
-      if (toDo.done === false) {
-        return true;
-      }
-      return false;
-    });
+const getToDoList = (toDoList, toggleSelect) => {
+  if (toDoList !== null && Object.keys(toDoList).length > 0) {
+    return toDoList.map(toDo => (
+      <Card
+        key={toDo.toDoName}
+        style={toDo.selected ? { border: '1px solid red', marginTop: '10px' } : { marginTop: '10px' }}
+        onClick={() => toggleSelect(toDo.toDoName)}
+      >
+        <CardContent
+          style={cardContentStyle}
+        >
+          {toDo.toDoName}
+        </CardContent>
+      </Card>
+    ));
   }
-  if (selectedList === 'DONE') {
-    return toDoList.filter((toDo) => {
-      if (toDo.done === true) {
-        return true;
-      }
-      return false;
-    });
-  }
-  return toDoList;
+  return <div />;
 };
+
+const getFilteredList = (filterMode, toDoList) => {
+  if (toDoList !== null && Object.keys(toDoList).length > 0) {
+    if (filterMode === 'TODO') {
+      return toDoList.filter((toDo) => {
+        if (toDo.done === false) {
+          return true;
+        }
+        return false;
+      });
+    }
+    if (filterMode === 'DONE') {
+      return toDoList.filter((toDo) => {
+        if (toDo.done === true) {
+          return true;
+        }
+        return false;
+      });
+    }
+    return toDoList;
+  }
+  return {};
+};
+
+const getSelectedToDosList = toDoList => toDoList.map((toDo) => {
+  if (toDo.selected === true) {
+    return toDo.toDoName;
+  }
+  return null;
+});
 
 const ToDoListView = (props) => {
   const {
     selectedList,
     toDoReducer,
-    toggleSelect
+    toggleSelect,
+    onDoSelectedToDos,
+    onUndoSelectedToDos,
+    onRemoveSelectedToDos,
   } = props;
   return (
     <Grid
@@ -71,10 +98,71 @@ const ToDoListView = (props) => {
         {getToDoList(getFilteredList(selectedList, toDoReducer), toggleSelect)}
       </Grid>
       <Grid item xs={10}>
-        {/* {getButtons()} */}
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          style={gridStyle}
+        >
+          <Grid item xs={4}>
+            <Button
+              style={buttonStyle}
+              onClick={() => onDoSelectedToDos(
+                getSelectedToDosList(getFilteredList(selectedList, toDoReducer)),
+              )}
+            >
+              Do Selected ToDos
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              style={buttonStyle}
+              onClick={() => onUndoSelectedToDos(
+                getSelectedToDosList(getFilteredList(selectedList, toDoReducer)),
+              )}
+            >
+              Undo Selected ToDos
+            </Button>
+          </Grid>
+          <Grid item xs={4}>
+            <Button
+              style={buttonStyle}
+              onClick={() => onRemoveSelectedToDos(
+                getSelectedToDosList(getFilteredList(selectedList, toDoReducer)),
+              )}
+            >
+              Remove Selected ToDos
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
+};
+
+ToDoListView.propTypes = {
+  selectedList: PropTypes.string,
+  toDoReducer: PropTypes.arrayOf(
+    PropTypes.shape({
+      toDoName: PropTypes.string,
+      done: PropTypes.bool,
+      selected: PropTypes.bool,
+    }),
+  ),
+  toggleSelect: PropTypes.func,
+  onDoSelectedToDos: PropTypes.func,
+  onUndoSelectedToDos: PropTypes.func,
+  onRemoveSelectedToDos: PropTypes.func,
+};
+
+ToDoListView.defaultProps = {
+  selectedList: 'TODO',
+  toDoReducer: [],
+  toggleSelect: () => {},
+  onDoSelectedToDos: () => {},
+  onUndoSelectedToDos: () => {},
+  onRemoveSelectedToDos: () => {},
 };
 
 export default connect(
@@ -83,8 +171,8 @@ export default connect(
   }),
   {
     toggleSelect: toggleSelectToDo,
-    // doSelectedToDos,
-    // undoSelectedToDos,
-    // removeSelectedToDos,
+    onDoSelectedToDos: doSelectedToDos,
+    onUndoSelectedToDos: undoSelectedToDos,
+    onRemoveSelectedToDos: removeSelectedToDos,
   },
 )(ToDoListView);

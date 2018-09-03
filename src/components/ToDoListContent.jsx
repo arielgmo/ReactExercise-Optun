@@ -74,7 +74,7 @@ class ToDoListContent extends Component {
         justify="center"
         alignItems="center"
       >
-        <Grid item xs={10}>
+        <Grid item xs={12} md={10}>
           <TextField
             id="Add To Do"
             label="Add To Do"
