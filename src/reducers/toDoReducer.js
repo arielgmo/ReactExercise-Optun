@@ -1,3 +1,5 @@
+import { ADD_NEW_TODO } from '../actions/toDoActions';
+
 const mockedState = [
   {
     toDoName: 'Go to the supermarket',
@@ -18,6 +20,12 @@ const mockedState = [
 
 export default function products(state = mockedState, action) {
   switch (action.type) {
+    case ADD_NEW_TODO: {
+      return [
+        ...state,
+        { ...action.payload },
+      ];
+    }
     default:
       return state;
   }

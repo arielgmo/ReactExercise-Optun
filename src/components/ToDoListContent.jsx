@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { addNewTodo } from '../actions/toDoActions';
 
 const textFieldStyle = {
   marginTop: '0',
@@ -10,7 +13,15 @@ const textFieldStyle = {
   width: '80%',
 };
 
-export default class ToDoListContent extends Component {
+class ToDoListContent extends Component {
+  static propTypes = {
+    onAddNewTodo: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onAddNewTodo: () => {},
+  };
+
   state = {
     selectedList: 'TODO',
     addTodoValue: '',
@@ -46,7 +57,9 @@ export default class ToDoListContent extends Component {
   changeNewToDo = value => this.setState(prevState => ({ ...prevState, addTodoValue: value }));
 
   addNewToDo = () => {
-    console.log(this.state.addTodoValue);
+    const { onAddNewTodo } = this.props;
+    const { addTodoValue } = this.state;
+    onAddNewTodo(addTodoValue);
   }
 
   getToDoList = () => {
@@ -95,3 +108,5 @@ export default class ToDoListContent extends Component {
     );
   }
 }
+
+export default connect(null, { onAddNewTodo: addNewTodo })(ToDoListContent);
