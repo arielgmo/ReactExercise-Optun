@@ -1,4 +1,7 @@
-import { ADD_NEW_TODO } from '../actions/toDoActions';
+import {
+  ADD_NEW_TODO,
+  TOGGLE_TODO,
+} from '../actions/toDoActions';
 
 const mockedState = [
   {
@@ -14,7 +17,7 @@ const mockedState = [
   {
     toDoName: 'Make the report',
     done: false,
-    selected: true,
+    selected: false,
   },
 ];
 
@@ -25,6 +28,14 @@ export default function products(state = mockedState, action) {
         ...state,
         { ...action.payload },
       ];
+    }
+    case TOGGLE_TODO: {
+      return state.map((toDo) => {
+        if (toDo.toDoName === action.payload) {
+          return { ...toDo, selected: !toDo.selected };
+        }
+        return toDo;
+      });
     }
     default:
       return state;

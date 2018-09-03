@@ -1,4 +1,5 @@
 export const ADD_NEW_TODO = 'ADD_NEW_TODO';
+export const TOGGLE_TODO = 'TOGGLE_TODO';
 
 export function addNewTodo(toDoName) {
   return {
@@ -8,5 +9,12 @@ export function addNewTodo(toDoName) {
       done: false,
       selected: false,
     },
+  };
+}
+
+export function toggleSelectToDo(toDoName) {
+  return {
+    type: TOGGLE_TODO,
+    payload: toDoName,
   };
 }

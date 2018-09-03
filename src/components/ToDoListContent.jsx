@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { addNewTodo } from '../actions/toDoActions';
+import ToDoListView from './ToDoListView';
 
 const textFieldStyle = {
   marginTop: '0',
@@ -59,25 +60,13 @@ class ToDoListContent extends Component {
   addNewToDo = () => {
     const { onAddNewTodo } = this.props;
     const { addTodoValue } = this.state;
-    onAddNewTodo(addTodoValue);
-  }
-
-  getToDoList = () => {
-    const { selectedList } = this.state;
-    if (selectedList === 'TODO') {
-      return (
-        <p>TO DO</p>
-      );
+    if (addTodoValue !== '' && addTodoValue !== null) {
+      onAddNewTodo(addTodoValue);
     }
-    if (selectedList === 'DONE') {
-      return (
-        <p>DONE</p>
-      );
-    }
-    return <p>ALL</p>;
   }
 
   render() {
+    const { selectedList } = this.state;
     return (
       <Grid
         container
@@ -102,7 +91,7 @@ class ToDoListContent extends Component {
           {this.getButtons()}
         </Grid>
         <Grid item xs={12}>
-          {this.getToDoList()}
+          <ToDoListView selectedList={selectedList} />
         </Grid>
       </Grid>
     );
