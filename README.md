@@ -1,4 +1,4 @@
-##Considerações
+###Considerações
 -Eu fiz esse exercicio em torno de 6h, um pouco mais do que eu esperava.
 -Eu resolvi fazer o setup do redux-thunk inves do redux saga, por terem papel parecido e familiriadade com a biblioteca, considerando tambem que não tinha a necessidade de ter chamadas asincronas no projeto.
 -O jeito que eu separei as pastas é proximo ao padrão que uso normalmente pra desenvolver em react, porem com projeto com mais componentes, algum niveis a mais normalmente são usados para separar melhor os arquivos.
